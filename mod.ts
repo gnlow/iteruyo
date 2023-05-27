@@ -12,7 +12,7 @@ const iterably = <I>(iterable: IterableLike<I>) => {
     }
 }
 
-class Iteruyo<I> {
+export default class Iteruyo<I> {
     iterable
     constructor(iterableLike: IterableLike<I>) {
         this.iterable = iterably(iterableLike)

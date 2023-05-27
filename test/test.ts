@@ -197,6 +197,28 @@ Deno.test("equal", () => {
     )
 })
 
+Deno.test("reduceWithGenerator", () => {
+    assertEquals(
+        $("abc def")
+        .reduceWithGenerator(
+            function*(o, i) {
+                if (/^\w*$/.test(o))
+                    if (/\w/.test(i))
+                        return o + i
+                    else {
+                        yield o
+                        return ""
+                    }
+                return o
+            },
+            "",
+            "",
+        )
+        .toArray(),
+        ["abc", "def"]
+    )
+})
+
 Deno.test("toArray", () => {
     assertEquals(
         $([1, 2, 3])

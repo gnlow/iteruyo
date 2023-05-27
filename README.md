@@ -8,3 +8,10 @@ $([1, 2, 3, 4, 5])
     .map(x => x * 2)
     .forEach(console.log) // 4 8
 ```
+```ts
+$([1, 2, 3, 4, 5])
+    .multiFold(function*(o, i) {
+        yield o + i
+        return o + i
+    })
+```

@@ -2,6 +2,11 @@
 
 type IterableLike<I> = Iterable<I> | (() => Iterator<I>)
 
+type MultiFoldControl<I, O> = {
+    acc: (o: O) => void
+    yield_: (i: I) => void
+}
+
 const iterably = <I>(iterable: IterableLike<I>) => {
     if (typeof iterable == "function") {
         return {
@@ -202,6 +207,23 @@ export default class Iteruyo<I> {
             if (iterator.next().value != i)
                 return false
         return iterator.next().done
+    }
+
+    reduceWithGenerator<Acc, O>(
+        f: (acc: Acc, i: I) => Generator<O, Acc>,
+        initial: Acc,
+        final?: I,
+    ) {
+        const that = this
+        return new Iteruyo<O>(function*() {
+            let acc = initial
+            for (const i of that) {
+                acc = yield* f(acc, i)
+            }
+            if (typeof final != "undefined") {
+                yield* f(acc, final)
+            }
+        })
     }
 
     /* output */

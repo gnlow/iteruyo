@@ -41,6 +41,15 @@ Deno.test("find", () => {
     )
 })
 
+Deno.test("reduce", () => {
+    assertEquals(
+        $([1, 2, 3, 4, 5])
+            .reduce((o, i) => o + i, 0),
+        [1, 2, 3, 4, 5]
+            .reduce((o, i) => o + i, 0)
+    )
+})
+
 Deno.test("every", () => {
     assertEquals(
         $([1, 2, 3, 4, 5])

@@ -67,6 +67,13 @@ export default class Iteruyo<I> {
                 return i
     }
 
+    reduce<O>(f: (o: O, i: I) => O, initial: O): O {
+        let o = initial
+        for (const i of this)
+            o = f(o, i)
+        return o
+    }
+
     every(f: (i: I) => boolean): boolean {
         for (const i of this)
             if (!f(i))

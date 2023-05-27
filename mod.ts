@@ -83,7 +83,7 @@ export default class Iteruyo<I> {
             .toString()
     }
 
-    length() {
+    get length() {
         let length = 0
         for (const _ of this)
             length++
@@ -105,6 +105,4 @@ export default class Iteruyo<I> {
     }
 }
 
-Iteruyo
-    .from([1, 2, 3])
-    .pipe(x => console.log(x.join("")))
+export const $ = Iteruyo.from

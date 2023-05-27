@@ -89,7 +89,7 @@ Deno.test("length", () => {
     )
 })
 
-/*
+
 Deno.test("split", () => {
     assertEquals(
         $("abc,d,ef")
@@ -107,8 +107,15 @@ Deno.test("split", () => {
         "abc->d->ef"
             .split("->")
     )
+    assertEquals(
+        $("a->bc->->d-->->e")
+            .split("->->")
+            .map(i => i.join(""))
+            .toArray(),
+        "a->bc->->d-->->e"
+            .split("->->")
+    )
 })
-*/
 
 Deno.test("startsWith", () => {
     assertEquals(

@@ -97,19 +97,38 @@ export default class Iteruyo<I> {
 
     /* String */
 
-    split(seperator: IterableLike<I>) {
+    
+    split(seperator_: IterableLike<I>) {
+        const seperator = [...iterably(seperator_)]
         const that = this
         return new Iteruyo(function*() {
+            let candidates: number[] = []
             let buffer = []
-            for (const i of that)
-                if (i == seperator) {
-                    yield buffer
-                    buffer = []
-                } else
-                    buffer.push(i)
+            for (const item of that) {
+                for (let i = 0; i < candidates.length; i++) {
+                    const candy = candidates[i]
+                    if (candy == seperator.length) {
+                        yield buffer.slice(0, -candy)
+                        buffer = []
+                        candidates = []
+                        break
+                    }
+                    if (item == seperator[candy]) {
+                        candidates[i]++ // candy++
+                    } else {
+                        candidates.splice(i, 1)
+                        i--
+                    }
+                }
+                if (item == seperator[0]) {
+                    candidates.push(1)
+                }
+                buffer.push(item)
+            }
             yield buffer
         })
     }
+    
 
     startsWith(iterable: IterableLike<I>) {
         const iterator = this[Symbol.iterator]()
@@ -131,6 +150,18 @@ export default class Iteruyo<I> {
                     value: item.value,
                     done: (item = iterator.next()).done,
                 }
+            }
+        })
+    }
+
+    mapRest() {
+        const that = this
+        return new Iteruyo(function*() {
+            const iterator = that[Symbol.iterator]()
+            let item = iterator.next()
+            while (!item.done) {
+                yield item.value
+                item = iterator.next()
             }
         })
     }

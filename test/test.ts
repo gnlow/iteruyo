@@ -32,6 +32,15 @@ Deno.test("filter", () => {
     )
 })
 
+Deno.test("find", () => {
+    assertEquals(
+        $([1, 2, 3, 4, 5])
+            .find(i => i % 2 === 0),
+        [1, 2, 3, 4, 5]
+            .find(i => i % 2 === 0)
+    )
+})
+
 Deno.test("mapDescriptor", () => {
     assertEquals(
         $([1, 2, 3])

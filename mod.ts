@@ -43,13 +43,21 @@ export default class Iteruyo<I> {
         })
     }
 
-    filter(f: (i: I) => boolean) {
+    filter(f: (i: I) => boolean): Iteruyo<I>
+    filter<T extends I>(f: (i: I) => i is T): Iteruyo<T> {
         const that = this
         return new Iteruyo(function*() {
             for (const i of that)
                 if (f(i))
                     yield i
         })
+    }
+
+    find(f: (i: I) => boolean): I | undefined
+    find<T extends I>(f: (i: I) => i is T): T | undefined {
+        for (const i of this)
+            if (f(i))
+                return i
     }
 
     mapDescriptor() {

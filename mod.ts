@@ -26,6 +26,8 @@ export default class Iteruyo<I> {
         return new Iteruyo(iterable)
     }
 
+    /* Array */
+
     map<O>(f: (i: I) => O) {
         const that = this
         return new Iteruyo(function*() {
@@ -65,6 +67,60 @@ export default class Iteruyo<I> {
                 return i
     }
 
+    every(f: (i: I) => boolean): boolean {
+        for (const i of this)
+            if (!f(i))
+                return false
+        return true
+    }
+
+    some(f: (i: I) => boolean): boolean {
+        for (const i of this)
+            if (f(i))
+                return true
+        return false
+    }
+
+    join(seperator: string) {
+        return this
+            .map(String)
+            .seperate(seperator)
+            .toString()
+    }
+
+    get length() {
+        let length = 0
+        for (const _ of this)
+            length++
+        return length
+    }
+
+    /* String */
+
+    split(seperator: IterableLike<I>) {
+        const that = this
+        return new Iteruyo(function*() {
+            let buffer = []
+            for (const i of that)
+                if (i == seperator) {
+                    yield buffer
+                    buffer = []
+                } else
+                    buffer.push(i)
+            yield buffer
+        })
+    }
+
+    startsWith(iterable: IterableLike<I>) {
+        const iterator = this[Symbol.iterator]()
+        for (const i of iterably(iterable))
+            if (iterator.next().value != i)
+                return false
+        return true
+    }
+
+    /* util */
+
     mapDescriptor() {
         const that = this
         return new Iteruyo(function*() {
@@ -89,23 +145,28 @@ export default class Iteruyo<I> {
             })
     }
 
-    join(seperator: string) {
-        return this
-            .map(String)
-            .seperate(seperator)
-            .toString()
-    }
-
-    get length() {
-        let length = 0
-        for (const _ of this)
-            length++
-        return length
-    }
-
     pipe<A>(f: (i: Iteruyo<I>) => A) {
         return f(this)
     }
+
+    enumerate() {
+        const that = this
+        let index = 0
+        return new Iteruyo(function*() {
+            for (const i of that)
+                yield [index++, i]
+        })
+    }
+
+    equal(iterable: IterableLike<I>) {
+        const iterator = iterably(iterable)[Symbol.iterator]()
+        for (const i of this)
+            if (iterator.next().value != i)
+                return false
+        return iterator.next().done
+    }
+
+    /* output */
 
     toArray() {
         return [...this]

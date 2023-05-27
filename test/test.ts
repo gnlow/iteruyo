@@ -41,6 +41,93 @@ Deno.test("find", () => {
     )
 })
 
+Deno.test("every", () => {
+    assertEquals(
+        $([1, 2, 3, 4, 5])
+            .every(i => i % 2 == 0),
+        [1, 2, 3, 4, 5]
+            .every(i => i % 2 == 0)
+    )
+    assertEquals(
+        $([1, 2, 3, 4, 5])
+            .every(i => i > 0),
+        [1, 2, 3, 4, 5]
+            .every(i => i > 0)
+    )
+})
+
+Deno.test("some", () => {
+    assertEquals(
+        $([1, 2, 3, 4, 5])
+            .some(i => i % 2 == 0),
+        [1, 2, 3, 4, 5]
+            .some(i => i % 2 == 0)
+    )
+    assertEquals(
+        $([1, 2, 3, 4, 5])
+            .some(i => i > 4),
+        [1, 2, 3, 4, 5]
+            .some(i => i > 4)
+    )
+})
+
+Deno.test("join", () => {
+    assertEquals(
+        $([1, 2, 3])
+            .join("0"),
+        [1, 2, 3]
+            .join("0")
+    )
+})
+
+Deno.test("length", () => {
+    assertEquals(
+        $([1, 2, 3])
+            .length,
+        [1, 2, 3]
+            .length
+    )
+})
+
+/*
+Deno.test("split", () => {
+    assertEquals(
+        $("abc,d,ef")
+            .split(",")
+            .map(i => i.join(""))
+            .toArray(),
+        "abc,d,ef"
+            .split(",")
+    )
+    assertEquals(
+        $("abc->d->ef")
+            .split("->")
+            .map(i => i.join(""))
+            .toArray(),
+        "abc->d->ef"
+            .split("->")
+    )
+})
+*/
+
+Deno.test("startsWith", () => {
+    assertEquals(
+        $([1, 2, 3])
+            .startsWith([1, 2, 3]),
+        true
+    )
+    assertEquals(
+        $([1, 2, 3, 4])
+            .startsWith([1, 2, 3]),
+        true
+    )
+    assertEquals(
+        $([1, 2, 3])
+            .startsWith([1, 2, 3, 4]),
+        false
+    )
+})
+
 Deno.test("mapDescriptor", () => {
     assertEquals(
         $([1, 2, 3])
@@ -63,21 +150,34 @@ Deno.test("seperate", () => {
     )
 })
 
-Deno.test("join", () => {
+Deno.test("enumerate", () => {
     assertEquals(
         $([1, 2, 3])
-            .join("0"),
-        [1, 2, 3]
-            .join("0")
+            .enumerate()
+            .toArray(),
+        [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+        ]
     )
 })
 
-Deno.test("length", () => {
+Deno.test("equal", () => {
     assertEquals(
         $([1, 2, 3])
-            .length,
-        [1, 2, 3]
-            .length
+            .equal([1, 2, 3]),
+        true
+    )
+    assertEquals(
+        $([1, 2, 3, 4])
+            .equal([1, 2, 3]),
+        false
+    )
+    assertEquals(
+        $([1, 2, 3])
+            .equal([1, 2, 3, 4]),
+        false
     )
 })
 

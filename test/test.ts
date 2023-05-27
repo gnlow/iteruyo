@@ -25,19 +25,19 @@ Deno.test("flatMap", () => {
 Deno.test("filter", () => {
     assertEquals(
         $([1, 2, 3, 4, 5])
-            .filter(i => i % 2 === 0)
+            .filter(i => i % 2 == 0)
             .toArray(),
         [1, 2, 3, 4, 5]
-            .filter(i => i % 2 === 0)
+            .filter(i => i % 2 == 0)
     )
 })
 
 Deno.test("find", () => {
     assertEquals(
         $([1, 2, 3, 4, 5])
-            .find(i => i % 2 === 0),
+            .find(i => i % 2 == 0),
         [1, 2, 3, 4, 5]
-            .find(i => i % 2 === 0)
+            .find(i => i % 2 == 0)
     )
 })
 

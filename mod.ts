@@ -43,6 +43,11 @@ export default class Iteruyo<I> {
         })
     }
 
+    forEach(f: (i: I) => void) {
+        for (const i of this)
+            f(i)
+    }
+
     filter(f: (i: I) => boolean): Iteruyo<I>
     filter<T extends I>(f: (i: I) => i is T): Iteruyo<T> {
         const that = this

@@ -32,6 +32,16 @@ Deno.test("filter", () => {
     )
 })
 
+Deno.test("flat", () => {
+    assertEquals(
+        $([[1, 2], [3, 4], [5, 6]])
+            .flat()
+            .toArray(),
+        [[1, 2], [3, 4], [5, 6]]
+            .flat()
+    )
+})
+
 Deno.test("find", () => {
     assertEquals(
         $([1, 2, 3, 4, 5])

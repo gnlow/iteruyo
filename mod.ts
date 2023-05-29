@@ -65,6 +65,14 @@ export default class Iteruyo<I> {
         })
     }
 
+    flat<T>(this: Iteruyo<IterableLike<T>>) {
+        const that = this
+        return new Iteruyo(function*() {
+            for (const i of that)
+                yield* iterably(i)
+        })
+    }
+
     find(f: (i: I) => boolean): I | undefined
     find<T extends I>(f: (i: I) => i is T): T | undefined {
         for (const i of this)

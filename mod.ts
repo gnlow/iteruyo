@@ -239,6 +239,17 @@ export default class Iteruyo<I> {
         return this
     }
 
+    take(n: number) {
+        const that = this
+        return new Iteruyo(function*() {
+            for (const i of that) {
+                if (n-- <= 0)
+                    break
+                yield i
+            }
+        })
+    }
+
     /* output */
 
     toArray() {

@@ -238,6 +238,15 @@ Deno.test("bypass", () => {
     )
 })
 
+Deno.test("take", () => {
+    assertEquals(
+        $([1, 2, 3])
+            .take(2)
+            .toArray(),
+        [1, 2]
+    )
+})
+
 Deno.test("toArray", () => {
     assertEquals(
         $([1, 2, 3])

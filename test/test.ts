@@ -229,6 +229,15 @@ Deno.test("reduceWithGenerator", () => {
     )
 })
 
+Deno.test("bypass", () => {
+    assertEquals(
+        $([1, 2, 3])
+            .bypass(console.log)
+            .toArray(),
+        [1, 2, 3]
+    )
+})
+
 Deno.test("toArray", () => {
     assertEquals(
         $([1, 2, 3])

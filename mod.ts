@@ -234,6 +234,11 @@ export default class Iteruyo<I> {
         })
     }
 
+    bypass(f: (i: Iteruyo<I>) => void) {
+        f(this)
+        return this
+    }
+
     /* output */
 
     toArray() {

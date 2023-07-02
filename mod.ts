@@ -21,24 +21,24 @@ export default class Iteruyo<I> {
     /* Array */
 
     map<O>(f: (i: I) => O) {
-        return new Iteruyo(m.map(f)(this))
+        return m.map(f)(this)
     }
 
     flatMap<O>(f: (i: I) => IterableLike<O>) {
-        return new Iteruyo(m.flatMap(f)(this))
+        return m.flatMap(f)(this)
     }
 
     forEach(f: (i: I) => void) {
-        m.forEach(f)(this)
+        return m.forEach(f)(this)
     }
 
     filter(f: (i: I) => boolean): Iteruyo<I>
     filter<T extends I>(f: (i: I) => i is T) {
-        return new Iteruyo(m.filter(f)(this))
+        return m.filter(f)(this)
     }
 
     flat<T>(this: Iteruyo<IterableLike<T>>) {
-        return new Iteruyo(m.flat(this))
+        return m.flat(this)
     }
 
     find(f: (i: I) => boolean): I | undefined

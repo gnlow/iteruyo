@@ -1,23 +1,25 @@
 import { IterableLike, iterably } from "../type.ts"
 
+import { $ } from "../../mod.ts"
+
 export const map =
     <I, O>
     (f: (i: I) => O) =>
     (iterable: Iterable<I>) =>
-    function*() {
+    $(function*() {
         for (const i of iterable)
             yield f(i)
-    }
+    })
 
 export const flatMap =
     <I, O>
     (f: (i: I) => IterableLike<O>) =>
     (iterable: Iterable<I>) =>
-    function*() {
+    $(function*() {
         for (const i of iterable)
             for (const j of iterably(f(i)))
                 yield j
-    }
+    })
 
 export const forEach =
     <I>
@@ -31,19 +33,19 @@ export const filter =
     <I, T extends I>
     (f: (i: I) => i is T) =>
     (iterable: Iterable<I>) =>
-    function*() {
+    $(function*() {
         for (const i of iterable)
             if (f(i))
                 yield i
-    }
+    })
 
 export const flat =
     <T>
     (iterable: Iterable<IterableLike<T>>) =>
-    function*() {
+    $(function*() {
         for (const i of iterable)
             yield* iterably(i)
-    }
+    })
 
 export const find =
     <I, T extends I>

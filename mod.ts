@@ -1,21 +1,8 @@
 // deno-lint-ignore-file no-this-alias
 
-type IterableLike<I> = Iterable<I> | (() => Iterator<I>)
+import * as m from "./src/methods/mod.ts"
 
-type MultiFoldControl<I, O> = {
-    acc: (o: O) => void
-    yield_: (i: I) => void
-}
-
-const iterably = <I>(iterable: IterableLike<I>) => {
-    if (typeof iterable == "function") {
-        return {
-            [Symbol.iterator]: iterable
-        }
-    } else {
-        return iterable
-    }
-}
+import { IterableLike, iterably } from "./src/type.ts"
 
 export default class Iteruyo<I> {
     iterable
@@ -34,85 +21,49 @@ export default class Iteruyo<I> {
     /* Array */
 
     map<O>(f: (i: I) => O) {
-        const that = this
-        return new Iteruyo(function*() {
-            for (const i of that)
-                yield f(i)
-        })
+        return new Iteruyo(m.map(f)(this))
     }
 
     flatMap<O>(f: (i: I) => IterableLike<O>) {
-        const that = this
-        return new Iteruyo(function*() {
-            for (const i of that)
-                for (const j of iterably(f(i)))
-                    yield j
-        })
+        return new Iteruyo(m.flatMap(f)(this))
     }
 
     forEach(f: (i: I) => void) {
-        for (const i of this)
-            f(i)
+        m.forEach(f)(this)
     }
 
     filter(f: (i: I) => boolean): Iteruyo<I>
-    filter<T extends I>(f: (i: I) => i is T): Iteruyo<T> {
-        const that = this
-        return new Iteruyo(function*() {
-            for (const i of that)
-                if (f(i))
-                    yield i
-        })
+    filter<T extends I>(f: (i: I) => i is T) {
+        return new Iteruyo(m.filter(f)(this))
     }
 
     flat<T>(this: Iteruyo<IterableLike<T>>) {
-        const that = this
-        return new Iteruyo(function*() {
-            for (const i of that)
-                yield* iterably(i)
-        })
+        return new Iteruyo(m.flat(this))
     }
 
     find(f: (i: I) => boolean): I | undefined
     find<T extends I>(f: (i: I) => i is T): T | undefined {
-        for (const i of this)
-            if (f(i))
-                return i
+        return m.find(f)(this)
     }
 
     reduce<O>(f: (o: O, i: I) => O, initial: O): O {
-        let o = initial
-        for (const i of this)
-            o = f(o, i)
-        return o
+        return m.reduce(f, initial)(this)
     }
 
     every(f: (i: I) => boolean): boolean {
-        for (const i of this)
-            if (!f(i))
-                return false
-        return true
+        return m.every(f)(this)
     }
 
     some(f: (i: I) => boolean): boolean {
-        for (const i of this)
-            if (f(i))
-                return true
-        return false
+        return m.some(f)(this)
     }
 
     join(seperator: string) {
-        return this
-            .map(String)
-            .seperate(seperator)
-            .toString()
+        return m.join(seperator)(this)
     }
 
     get length() {
-        let length = 0
-        for (const _ of this)
-            length++
-        return length
+        return m.length(this)
     }
 
     /* String */

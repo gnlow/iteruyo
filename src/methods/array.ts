@@ -86,11 +86,11 @@ export const some =
 
 export const join =
     (seperator: string) =>
-    (iterable: Iterable<any>) =>
-    reduce((a, b) => a + seperator + b, "")(iterable)
+    (iterable: Iterable<unknown>) =>
+    reduce((a, b) => a + (a ? seperator : "") + b, "")(iterable)
 
 export const length =
-    (iterable: Iterable<any>) => {
+    (iterable: Iterable<unknown>) => {
         let length = 0
         for (const _ of iterable)
             length++
